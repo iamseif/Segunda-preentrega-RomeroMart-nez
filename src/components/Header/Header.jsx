@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 
 import { NavLink } from "react-router-dom";
 import "./Header.css";
@@ -9,6 +9,7 @@ import logo from "../../assets/images/eco-logo.png";
 import userIcon from "../../assets/images/user-icon.png";
 
 import { Container, Row } from "reactstrap";
+import { useSelector } from "react-redux";
 
 const nav__links = [
     {
@@ -26,6 +27,34 @@ const nav__links = [
 ];
 
 const Header = () => {
+    const headerRef =useRef(null);
+    const totalQuantity = useSelector(state=> state.cart.totalQuantity);
+
+    const menuRef = useRef(null);
+
+    const stickyHeaderFunc = () => {
+        window.addEventListener("scroll", () => {
+            if (
+                document.body.scrollTop > 80 ||
+                document.documentElement.scrollTop > 80
+            ){
+                headerRef.current.classList.add("sticky__header");
+            }
+            else {
+                headerRef.current.classList.remove("sticky__header");
+            }
+        });
+    };
+
+    useEffect(() => {
+        stickyHeaderFunc();
+
+        return () => window.removeEventListener("scroll", stickyHeaderFunc);
+    });
+
+    const menuToggle = () =>menuRef.current.classList.toggle ("active__menu");
+
+
  return (
     <header className="header">
         <Container>
@@ -60,7 +89,7 @@ const Header = () => {
                             </span>
 
                             <span className="cart__icon"><i class="ri-shopping-bag-line"></i>
-                              <span className="badge">1</span>
+                              <span className="badge">{totalQuantity}</span>
                             </span>
                             
                             <span>

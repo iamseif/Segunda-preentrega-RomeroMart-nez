@@ -16,18 +16,24 @@ import ProductsList from "../components/UI/ProductsList";
 
 const Home = () => {
 
-    const [data, setData] = useState(products)
+    const [trendingProducts, setTrendingProducts] = useState([]);
+    const [bestSalesProducts, setBestSalesProducts] = useState([]);
 
     const year = new Date().getFullYear();
 
     useEffect(()=>{
-        const filterdProducts = products.filter(
-            (item) => item.category =='chair');
+        const filterdTrendingProducts = products.filter(
+            (item) => item.category =="chair");
 
-        setData(filterdProducts);
+        const filterdBestSalesProducts = products.filter(
+            (item) => item.category =="sofa");
+
+        setTrendingProducts(filterdTrendingProducts);
+        setBestSalesProducts(filterdBestSalesProducts);
     }, []);
 
-    return (<Helmet title={"Home"}>
+    return (
+    <Helmet title={"Home"}>
         <section className="hero__section">
             <Container>
                 <Row>
@@ -57,10 +63,22 @@ const Home = () => {
                     <Col lg="12" className="text-center">
                         <h2 className="section__title">Trending Products</h2>
                     </Col>
-                    <ProductsList data={data} />
+                    <ProductsList data={trendingProducts} />
                 </Row>
             </Container>
         </section>
+
+        <section className="best__sales">
+            <Container>
+                <Row>
+                    <Col lg="12" className="text-center">
+                            <h2 className="section__title">Best Sales</h2>
+                    </Col>
+                    <ProductsList data={bestSalesProducts} />
+                </Row>
+            </Container>
+        </section>
+
     </Helmet>
     );
 };
